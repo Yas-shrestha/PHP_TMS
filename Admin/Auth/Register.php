@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             } else {
                 echo "password must be same";
             }
+        } else {
+            echo "email already exist";
         }
     } else {
         echo "Fill all the fields";
