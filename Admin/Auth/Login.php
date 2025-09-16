@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // var_dump($user);
             if (password_verify($password, $user['password'])) {
                 session_start();
+                $_SESSION['user']['id'] = $user['id'];
                 $_SESSION['user']['name'] = $user['name'];
                 $_SESSION['user']['email'] = $user['email'];
                 $_SESSION['user']['phone'] = $user['phone'];

@@ -1,71 +1,90 @@
 <?php
 include "../Layouts/header.php";
 include "../Layouts/nav.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 ?>
-<form class="row g-3 needs-validation" novalidate>
-  <div class="col-md-4">
-    <label for="validationCustom01" class="form-label">First name</label>
-    <input type="text" class="form-control" id="validationCustom01" value="Mark" required>
-    <div class="valid-feedback">
-      Looks good!
+
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+  // var_dump($_POST);
+  $title = $_POST['title'];
+  $description = $_POST['description'];
+  $assigned_to = $_POST['assigned_to'];
+  $assigned_by = $_SESSION['user']['id'];
+  if ($title != "" && $description != "" && $assigned_to != "") {
+    $insert_query = "INSERT INTO tasks (title,description,assigned_to,assigned_by) VALUES('$title','$description','$assigned_to','$assigned_by')";
+    $insert_result = $conn->query($insert_query);
+    if ($insert_result) {
+?>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Value Inserted
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php
+    } else {
+    ?>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Value Not Inserted
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php
+    }
+  } else {
+    ?>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      Please Fill all the fields
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  </div>
-  <div class="col-md-4">
-    <label for="validationCustom02" class="form-label">Last name</label>
-    <input type="text" class="form-control" id="validationCustom02" value="Otto" required>
-    <div class="valid-feedback">
-      Looks good!
-    </div>
-  </div>
-  <div class="col-md-4">
-    <label for="validationCustomUsername" class="form-label">Username</label>
-    <div class="input-group">
-      <span class="input-group-text" id="inputGroupPrepend">@</span>
-      <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+<?php
+  }
+}
+
+?>
+<div class="container p-5">
+  <form class="row g-3 needs-validation shadow p-5 rounded-3" method="POST" novalidate>
+    <h1 class="text-center text-primary">Create Task</h1>
+
+    <!-- title -->
+    <div class="col-md-12">
+      <label for="validationCustom03" class="form-label">Title</label>
+      <input type="text" class="form-control" name="title" id="validationCustom03" required>
       <div class="invalid-feedback">
-        Please choose a username.
+        Please provide a valid city.
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <label for="validationCustom03" class="form-label">City</label>
-    <input type="text" class="form-control" id="validationCustom03" required>
-    <div class="invalid-feedback">
-      Please provide a valid city.
+    <!-- title -->
+    <!-- task Desc -->
+
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
     </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationCustom04" class="form-label">State</label>
-    <select class="form-select" id="validationCustom04" required>
-      <option selected disabled value="">Choose...</option>
-      <option>...</option>
-    </select>
-    <div class="invalid-feedback">
-      Please select a valid state.
+    <!-- task Desc -->
+    <!-- select assigned to  -->
+    <div>
+      <label for="assigned_to">Assiged To</label>
+      <select class="form-select" id="assigned_to" name="assigned_to" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <?php
+        $select_query = "SELECT * FROM users";
+        $query = $conn->query($select_query);
+        $users = mysqli_fetch_all($query, MYSQLI_ASSOC);
+        foreach ($users as $user) {
+        ?>
+          <option value="<?= $user['id'] ?>"><?= $user['name'] ?></option>
+        <?php
+        }
+        ?>
+      </select>
     </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationCustom05" class="form-label">Zip</label>
-    <input type="text" class="form-control" id="validationCustom05" required>
-    <div class="invalid-feedback">
-      Please provide a valid zip.
+    <!-- select assigned to  -->
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Submit form</button>
     </div>
-  </div>
-  <div class="col-12">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-      <label class="form-check-label" for="invalidCheck">
-        Agree to terms and conditions
-      </label>
-      <div class="invalid-feedback">
-        You must agree before submitting.
-      </div>
-    </div>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </div>
-</form>
+  </form>
+</div>
 <?php
 include "../Layouts/footer.php";
 ?>
