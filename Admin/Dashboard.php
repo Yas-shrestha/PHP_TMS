@@ -70,7 +70,7 @@ include "../Middleware/secure.php";
 
         <div class="d-flex justify-content-between">
             <h1>Tasks</h1>
-            <a href="./Task/Create.php" class="btn btn-primary btn-lg">Create</a>
+            <a href="./Task/create.php" class="btn btn-primary btn-lg">Create</a>
         </div>
         <div class="row py-4">
             <div class="col-lg-4 col-sm-6 col-12">

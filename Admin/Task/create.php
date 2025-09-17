@@ -17,14 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $insert_query = "INSERT INTO tasks (title,description,assigned_to,assigned_by) VALUES('$title','$description','$assigned_to','$assigned_by')";
     $insert_result = $conn->query($insert_query);
     if ($insert_result) {
-?>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Value Inserted
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php
+      header('location:/Admin/Task/manage.php');
     } else {
-    ?>
+?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         Value Not Inserted
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -44,8 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 ?>
 <div class="container p-5">
   <form class="row g-3 needs-validation shadow p-5 rounded-3" method="POST" novalidate>
-    <h1 class="text-center text-primary">Create Task</h1>
-
+    <div class="d-flex align-item-center justify-content-between">
+      <h1 class="text-center text-primary">Create Task</h1>
+      <a href="./manage.php" class="btn btn-secondary">Manage</a>
+    </div>
     <!-- title -->
     <div class="col-md-12">
       <label for="validationCustom03" class="form-label">Title</label>
